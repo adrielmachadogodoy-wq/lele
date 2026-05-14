@@ -1,0 +1,765 @@
+
+
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Aniversário amor.exe ❤️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink: #ff5ca8;
+      --pink-light: #ff8fc6;
+      --pink-pale: #ffd0e5;
+      --pink-glow: rgba(255, 92, 168, 0.3);
+      --cyan: #77e7ff;
+      --green: #90ff90;
+      --purple: #c084fc;
+      --bg: #05010f;
+      --bg2: #0d0020;
+      --glass: rgba(10, 10, 30, 0.65);
+      --border: rgba(255, 255, 255, 0.07);
+      --text: #e4e4e4;
+      --text-dim: #a0a0b8;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: none;
+    }
+
+    #cursor {
+      position: fixed; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--pink); pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed; width: 40px; height: 40px; border-radius: 50%;
+      border: 1.5px solid var(--pink-light); pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.25s, height 0.25s; opacity: 0.5;
+    }
+
+    #loading {
+      position: fixed; inset: 0; background: var(--bg); z-index: 9000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 24px; transition: opacity 0.8s ease, visibility 0.8s;
+    }
+    #loading.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .load-terminal { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--cyan); width: 420px; max-width: 90vw; }
+    .load-line { opacity: 0; white-space: nowrap; overflow: hidden; border-right: 2px solid var(--cyan); animation: typeLine 0.5s steps(40) forwards; }
+    .load-line:nth-child(1) { animation-delay: 0.1s; }
+    .load-line:nth-child(2) { animation-delay: 0.7s; border-right: none; }
+    .load-line:nth-child(3) { animation-delay: 1.3s; border-right: none; }
+    .load-line:nth-child(4) { animation-delay: 1.9s; border-right: none; }
+    .load-line:nth-child(5) { animation-delay: 2.5s; color: var(--pink); font-weight: bold; }
+    @keyframes typeLine { from { opacity: 1; width: 0; } to { opacity: 1; width: 100%; border-right: none; } }
+    .load-bar-wrap { width: 420px; max-width: 90vw; height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+    .load-bar { height: 100%; background: linear-gradient(90deg, var(--pink), var(--cyan)); animation: loadProgress 3.5s ease forwards; width: 0; }
+    @keyframes loadProgress { to { width: 100%; } }
+
+    #star-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    .heart-particle { position: fixed; pointer-events: none; z-index: 1; animation: floatHeart linear infinite; opacity: 0; user-select: none; }
+    @keyframes floatHeart {
+      0%   { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+      5%   { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-15vh) rotate(720deg); opacity: 0; }
+    }
+
+    .page-wrap { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 40px 32px; }
+
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 80px; padding: 16px 24px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 20px; backdrop-filter: blur(12px);
+    }
+    .logo { font-family: 'JetBrains Mono', monospace; color: var(--pink); font-size: 1.1rem; font-weight: 700; }
+    .menu { display: flex; gap: 24px; }
+    .menu a { color: var(--pink-pale); text-decoration: none; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.2s, color 0.2s; }
+    .menu a:hover { opacity: 1; color: var(--pink-light); }
+
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px; }
+    .hero-text h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3.8rem; font-weight: 700; line-height: 1.15; margin-bottom: 24px; }
+    .hero-text h1 span { color: var(--pink); }
+    .hero-text > p { color: var(--text-dim); font-size: 1.1rem; line-height: 1.85; margin-bottom: 32px; }
+    .type-cursor::after { content: '|'; color: var(--pink); animation: blink 0.7s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .code-box {
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,92,168,0.15);
+      border-radius: 20px; padding: 28px; margin-bottom: 32px;
+      box-shadow: 0 0 40px rgba(255,92,168,0.08), inset 0 0 30px rgba(0,0,0,0.2);
+      position: relative; overflow: hidden;
+    }
+    .code-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--pink), transparent); }
+    .code-top { display: flex; gap: 7px; margin-bottom: 18px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; } .dot-y { background: #ffbd2e; } .dot-g { background: #27c93f; }
+    code, .code-box { font-family: 'JetBrains Mono', monospace; color: var(--cyan); line-height: 1.9; font-size: 0.9rem; }
+    .pk { color: var(--pink); } .gr { color: var(--green); } .pu { color: var(--purple); } .cm { color: #555; }
+
+    .button {
+      display: inline-block; background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+      color: white; padding: 15px 32px; border-radius: 14px; text-decoration: none;
+      font-weight: 700; font-size: 1rem; transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 0 24px var(--pink-glow), 0 4px 20px rgba(0,0,0,0.3);
+      border: none; cursor: none; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;
+    }
+    .button:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 0 40px var(--pink-glow), 0 8px 30px rgba(0,0,0,0.4); }
+    .button:active { transform: scale(0.98); }
+
+    .photo-card {
+      border-radius: 28px; overflow: hidden; border: 2px solid rgba(255,92,168,0.25);
+      box-shadow: 0 0 60px rgba(255,92,168,0.2), 0 20px 60px rgba(0,0,0,0.4);
+      position: relative; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, rgba(255,92,168,0.08), rgba(119,231,255,0.05));
+    }
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(255,255,255,0.2); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+    .photo-placeholder span { font-size: 4rem; }
+    .photo-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,1,15,0.6) 0%, transparent 50%); pointer-events: none; }
+
+    .section {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 28px;
+      padding: 44px; margin-bottom: 40px; backdrop-filter: blur(16px);
+      position: relative; overflow: hidden;
+    }
+    .section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,92,168,0.4), transparent); }
+    .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 44px; color: var(--pink-light); font-weight: 700; }
+
+    .counter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .counter-card { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 28px 16px; text-align: center; border: 1px solid rgba(255,92,168,0.1); transition: border-color 0.3s, transform 0.3s; }
+    .counter-card:hover { border-color: rgba(255,92,168,0.4); transform: translateY(-4px); }
+    .counter-number { font-family: 'JetBrains Mono', monospace; font-size: 2.6rem; color: var(--pink); margin-bottom: 8px; font-weight: 700; }
+    .counter-label { color: var(--text-dim); font-size: 0.9rem; }
+
+    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+
+    .hidden-message {
+      display: none; margin-top: 28px; color: var(--pink-pale); font-size: 1.05rem;
+      line-height: 1.9; animation: fadeUp 0.7s ease forwards;
+      background: rgba(255,92,168,0.06); border: 1px solid rgba(255,92,168,0.15);
+      border-radius: 16px; padding: 24px;
+    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--pink), var(--cyan), transparent); }
+    .tl-item { position: relative; margin-bottom: 32px; opacity: 0; transform: translateX(-20px); transition: opacity 0.5s, transform 0.5s; }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+    .tl-dot { position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 10px var(--pink-glow); }
+    .tl-hash { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--cyan); margin-bottom: 4px; }
+    .tl-title { font-size: 1rem; font-weight: 600; color: white; margin-bottom: 4px; }
+    .tl-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .gallery-item { aspect-ratio: 1; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,92,168,0.15); background: rgba(255,92,168,0.05); display: flex; align-items: center; justify-content: center; cursor: none; transition: transform 0.3s, box-shadow 0.3s; position: relative; }
+    .gallery-item:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(255,92,168,0.3); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-item .caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(5,1,15,0.9), transparent); padding: 20px 12px 10px; font-size: 0.78rem; color: var(--pink-pale); opacity: 0; transition: opacity 0.3s; font-family: 'JetBrains Mono', monospace; }
+    .gallery-item:hover .caption { opacity: 1; }
+    .gallery-placeholder { font-size: 2.5rem; color: rgba(255,92,168,0.3); }
+
+    .music-player { display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,92,168,0.15); border-radius: 20px; padding: 20px 24px; margin-bottom: 32px; }
+    .music-btn { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--pink), var(--pink-light)); border: none; cursor: none; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 20px var(--pink-glow); }
+    .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--pink-glow); }
+    .music-info { flex: 1; min-width: 0; }
+    .music-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: white; }
+    .music-sub { font-size: 0.8rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+    .music-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 12px; overflow: hidden; }
+    .music-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--pink), var(--cyan)); border-radius: 3px; transition: width 0.5s linear; }
+    .music-note { font-size: 0.78rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; margin-top: 6px; opacity: 0.7; }
+
+    .next-anniv { text-align: center; padding: 32px; background: rgba(255,92,168,0.04); border-radius: 20px; border: 1px solid rgba(255,92,168,0.12); margin-top: 24px; }
+    .next-anniv h3 { color: var(--pink-light); margin-bottom: 16px; font-size: 1.1rem; }
+    .next-days { font-family: 'JetBrains Mono', monospace; font-size: 4rem; font-weight: 700; color: var(--pink); line-height: 1; margin-bottom: 8px; }
+    .next-label { color: var(--text-dim); font-size: 0.9rem; }
+
+    .closing { text-align: center; padding: 60px 40px; }
+    .closing h2 { font-size: 2.4rem; margin-bottom: 20px; color: var(--pink-light); }
+    .closing p { line-height: 2; color: var(--text); font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+
+    .footer { text-align: center; color: var(--text-dim); padding: 28px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
+
+    #easter-egg { display: none; position: fixed; inset: 0; z-index: 8000; background: rgba(5,1,15,0.95); align-items: center; justify-content: center; flex-direction: column; gap: 28px; backdrop-filter: blur(20px); }
+    #easter-egg.show { display: flex; animation: fadeUp 0.5s ease; }
+    #easter-egg h2 { font-size: 3rem; color: var(--pink); text-align: center; }
+    #easter-egg p { color: var(--pink-pale); max-width: 500px; text-align: center; line-height: 1.9; font-size: 1.1rem; }
+    .konami-hint { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.12); position: fixed; bottom: 12px; right: 20px; }
+
+    #game-wrap { text-align: center; }
+    #gameCanvas { border: 1px solid rgba(255,92,168,0.2); border-radius: 16px; background: rgba(0,0,0,0.4); display: block; margin: 0 auto 16px; max-width: 100%; }
+    .game-score { font-family: 'JetBrains Mono', monospace; color: var(--pink); font-size: 1rem; margin-bottom: 12px; }
+    .game-msg { color: var(--pink-pale); font-size: 0.95rem; min-height: 24px; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .hero, .bottom-grid { grid-template-columns: 1fr; }
+      .counter-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-text h1 { font-size: 2.6rem; }
+      .page-wrap { padding: 24px 18px; }
+      .section { padding: 28px 22px; }
+      .menu { display: none; }
+      #gameCanvas { width: 100% !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div id="loading">
+  <div class="load-terminal">
+    <div class="load-line">&gt; iniciando amor.exe...</div>
+    <div class="load-line">&gt; carregando sentimentos infinitos...</div>
+    <div class="load-line">&gt; compilando memórias do casal...</div>
+    <div class="load-line">&gt; verificando bundão: OK ✓</div>
+    <div class="load-line">&gt; pronto! feliz aniversário ❤️</div>
+  </div>
+  <div class="load-bar-wrap"><div class="load-bar"></div></div>
+</div>
+
+<canvas id="star-canvas"></canvas>
+
+<div id="easter-egg">
+  <div style="font-size:4rem;">🎉💖✨</div>
+  <h2>Você encontrou o segredo!</h2>
+  <p>
+    Você digitou o código secreto... Isso prova que você é especial de um jeito que nenhum algoritmo consegue medir.
+    <br><br>
+    Te amo do tamanho do universo — e ainda sobra espaço. ❤️
+  </p>
+  <button class="button" onclick="document.getElementById('easter-egg').classList.remove('show')">♡ Fechar</button>
+</div>
+
+<span class="konami-hint">// try: ↑↑↓↓←→←→</span>
+
+<div class="page-wrap">
+
+  <nav class="navbar reveal">
+    <div class="logo">&lt;/ amor.exe ❤️ &gt;</div>
+    <div class="menu">
+      <a href="#inicio">Início</a>
+      <a href="#juntos">Tempo juntos</a>
+      <a href="#timeline">Memórias</a>
+      <a href="#mensagem">Mensagem</a>
+      <a href="#jogo">Mini-jogo</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="inicio">
+    <div class="hero-text reveal">
+      <h1>
+        Feliz aniversário,<br>
+        <span id="typing-text" class="type-cursor"></span>
+      </h1>
+      <p>
+        Hoje é o dia da pessoa que transforma meus dias comuns em
+        código de felicidade — mesmo eu sofrendo pra entender kkk. ❤️
+      </p>
+      <div class="code-box">
+        <div class="code-top">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <code>
+<span class="pk">const</span> voce = <span class="gr">"minha namorada"</span>;<br>
+<span class="pk">const</span> perfeita = <span class="pu">true</span>;<br>
+<span class="pk">let</span> felicidade = <span class="pu">Infinitão</span>;<br><br>
+<span class="pk">if</span> (voce && perfeita) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"> lógica do infinitão</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;felicidade *= voce e seu bundão;<br>}<br><br>
+<span class="pk">function</span> <span class="gr">motivoDoMeuSorriso</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="pk">return</span> voce; <span class="cm"> sempre você</span><br>}<br><br>
+console.<span class="gr">log</span>(<span class="gr">"Eu te amo muito! ❤️"</span>);
+        </code>
+      </div>
+      <a class="button" href="#mensagem">♡ Clique aqui, meu amor</a>
+    </div>
+
+    <div class="photo-card reveal">
+      <img src="./lele.jpg" alt="Foto dela" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="photo-placeholder" style="display:none">
+        <span>📷</span>
+        <span>// coloque sua foto aqui</span>
+        <span style="font-size:0.7rem; opacity:0.5">lele.jpg</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="juntos">
+    <h2 class="section-title">Juntos há 1 ano e 9 meses ♡</h2>
+
+    <!-- MUSIC PLAYER -->
+    <div class="music-player">
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()">▶</button>
+      <div class="music-info">
+        <div class="music-title" id="musicTitle">♡ Nossa música especial</div>
+        <div class="music-sub">CKay, Dj Yo!, AX'EL - love nwantiti </div>
+        <div class="music-bar"><div class="music-progress" id="musicProgress"></div></div>
+        <div class="music-note" id="musicNote"></div>
+      </div>
+    </div>
+
+    <div class="counter-grid">
+      <div class="counter-card">
+        <div class="counter-number" id="cnt-days">0</div>
+        <div class="counter-label">Dias</div>
+      </div>
+      <div class="counter-card">
+        <div class="counter-number" id="cnt-hours">00</div>
+        <div class="counter-label">Horas</div>
+      </div>
+      <div class="counter-card">
+        <div class="counter-number" id="cnt-minutes">00</div>
+        <div class="counter-label">Minutos</div>
+      </div>
+      <div class="counter-card">
+        <div class="counter-number" id="cnt-seconds">00</div>
+        <div class="counter-label">Segundos</div>
+      </div>
+    </div>
+
+    <!-- PRÓXIMO ANIVERSÁRIO DELA (14/05) -->
+    <div class="next-anniv">
+      <h3>🎂 Próximo aniversário da Lele em</h3>
+      <div class="next-days" id="nextBirthday">–</div>
+      <div class="next-label">dias &nbsp;·&nbsp; <span id="nextBirthdayDate"></span></div>
+    </div>
+  </section>
+
+  <div class="bottom-grid">
+
+    <div class="section reveal" id="timeline">
+      <h2 style="margin-bottom:32px; color: var(--pink-light); font-size:1.6rem;">nossas-memórias 💻</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-hash">commit 0o983f8a — 21/12/2024</div>
+          <div class="tl-title">🌟 Primeiro encontro</div>
+          <div class="tl-desc">O dia que nossos olhares se cruzaram pela primeira vez no aeroporto.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-hash">commit d4e5f6a — 25/12/2024</div>
+          <div class="tl-title">💌 Primeira declaração</div>
+          <div class="tl-desc">Quando o coração tomou coragem e mandou o push request mais importante da vida, pedi a Leticia em namoro no natal.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-hash">commit 9c8b7a6 — 02/05/2025</div>
+          <div class="tl-title">✈️ Primeira viagem da lele sozinha</div>
+          <div class="tl-desc">Descobrindo o mundo, vulgo gramado, lado a lado. Cada quilômetro, um cafezin novo.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-hash">commit f1e2d3c — hoje</div>
+          <div class="tl-title">🎂 Mais um aniversário ❤️</div>
+          <div class="tl-desc">Mais um ano de amor, de risadas e de muito amor. Código rodando perfeitamente.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <h2 style="margin-bottom:28px; color: var(--pink-light); font-size:1.6rem;">Nossas memórias 📸</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="memoria1.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">📷</div>
+          <div class="caption"> primeira foto juntos</div>
+        </div>
+        <div class="gallery-item">
+          <img src="memoria2.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">🌅</div>
+          <div class="caption"> viagem inesquecível</div>
+        </div>
+        <div class="gallery-item">
+          <img src="memoria3.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">🥂</div>
+          <div class="caption"> celebrando juntos</div>
+        </div>
+        <div class="gallery-item">
+          <img src="memoria4.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">☕</div>
+          <div class="caption"> dia especial</div>
+        </div>
+        <div class="gallery-item">
+          <img src="memoria5.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">🌸</div>
+          <div class="caption"> momentos bonitos</div>
+        </div>
+        <div class="gallery-item">
+          <img src="memoria6.jpg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="gallery-placeholder" style="display:none">❤️</div>
+          <div class="caption"> nosso amor</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-grid">
+
+    <div class="section reveal">
+      <h2 style="margin-bottom:28px; color: var(--pink-light); font-size:1.5rem;">Código do nosso amor 💻</h2>
+      <div class="code-box">
+        <div class="code-top">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <code>
+<span class="cm"> Você é:</span><br>
+<span class="cm"> minha motivação diária</span><br>
+<span class="cm"> meu debug pra dias ruins</span><br>
+<span class="cm"> meu algoritmo favorito</span><br>
+<span class="cm"> meu lar. meu tudo ❤️</span><br><br>
+<span class="pk">while</span> (vida) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">amar</span>(voce);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">escolher</span>(voce);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">construirFuturo</span>(juntos);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">casar</span>(Pra ontem...);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">seu bundão</span>(quero);<br>}
+        </code>
+      </div>
+    </div>
+
+    <div class="section reveal" style="text-align:center;" id="mensagem">
+      <h2 style="margin-bottom:20px; color: var(--pink-light); font-size:1.5rem;">Mensagem secreta 💌</h2>
+      <p style="margin-bottom:28px; color:var(--text-dim); line-height:1.8;">
+        Essa mensagem é só pra você...<br>clique no botão abaixo:
+      </p>
+      <button class="button" onclick="showMessage()">♡ Abrir mensagem secreta ♡</button>
+      <div class="hidden-message" id="hiddenMessage">
+        Obrigado por existir, por ser incrível e por transformar minha vida em algo muito mais bonito. Sem você na minha vida, eu perco o meu eu.
+        Pra sempre com você, meu amor. Infinitão.
+        <br><br>
+        Você é meu código favorito que eu sempre quero codar. ❤️
+        <br><br>
+        <span style="font-size:2rem;">💖✨🎂 🍑</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section reveal" id="jogo">
+    <h2 class="section-title">Mini-jogo do amor 🎮</h2>
+    <p style="text-align:center; color:var(--text-dim); margin-bottom:28px; font-size:0.95rem;">
+      Controle o coração com as setas (ou WASD) e colete os corações rosas! Evite os bugs 🐛
+    </p>
+    <div id="game-wrap">
+      <div class="game-score">Pontos: <span id="scoreDisplay">0</span> &nbsp;|&nbsp; Vidas: <span id="livesDisplay">3</span></div>
+      <canvas id="gameCanvas" width="560" height="320"></canvas>
+      <div class="game-msg" id="gameMsg">Pressione ENTER ou toque no canvas para começar ♡</div>
+      <div style="margin-top:12px;">
+        <button class="button" style="font-size:0.85rem; padding:10px 22px;" onclick="startGame()">▶ Jogar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section closing reveal">
+    <h2>Obrigado por existir na minha vida. ❤️</h2>
+    <p>
+      Feliz aniversário, meu amor.<br>
+      Te amo mais do que palavras podem explicar<br>
+      e mais do que café colonial. ☕
+    </p>
+  </div>
+
+  <div class="footer">
+    Feito com ☕ e ❤️ especialmente para você &nbsp;|&nbsp; amor.exe v5.0.0
+  </div>
+
+</div>
+
+<!--
+  ════════════════════════════════════════
+  MÚSICA: coloque o link direto do .mp3 abaixo no atributo src=
+  Exemplo: src="https://seusite.com/musica.mp3"
+  Spotify NÃO funciona — precisa ser um link direto de arquivo .mp3
+  ════════════════════════════════════════
+-->
+<audio id="bgAudio" loop src="https://www.dropbox.com/scl/fi/8k2sivnqs7gw55epqsiep/CKay-Dj-Yo-AX-EL-love-nwantiti-feat.-Dj-Yo-AX-EL-Remix-SPOTISAVER-1.mp3?rlkey=bb2ps3b7e0qppotkq2tmku1s3&st=lo8dc0m8&raw=1"></audio>
+
+<script>
+/* ── CURSOR ─────────────────────────────── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button, .button, .gallery-item, .counter-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(2)'; ring.style.opacity = '1'; });
+  el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.5'; });
+});
+
+/* ── LOADING ────────────────────────────── */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loading').classList.add('hidden'), 4000);
+});
+
+/* ── STARS ──────────────────────────────── */
+(function(){
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 200; i++) stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.5+0.3, speed: Math.random()*0.003+0.001, phase: Math.random()*Math.PI*2 });
+  }
+  function drawStars(t) {
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s => {
+      const alpha = 0.2 + 0.6*(0.5+0.5*Math.sin(t*s.speed+s.phase));
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  resize(); initStars();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  requestAnimationFrame(drawStars);
+})();
+
+/* ── FLOATING HEARTS ────────────────────── */
+const EMOJIS = ['❤️','💕','💖','💗','💓','💝','✨','💫'];
+for (let i = 0; i < 35; i++) {
+  const h = document.createElement('div');
+  h.className = 'heart-particle';
+  h.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  h.style.cssText = `left:${Math.random()*100}vw;font-size:${Math.random()*22+10}px;animation-duration:${Math.random()*8+8}s;animation-delay:${Math.random()*12}s;`;
+  document.body.appendChild(h);
+}
+
+/* ── TYPING EFFECT ──────────────────────── */
+(function(){
+  const el = document.getElementById('typing-text');
+  const phrases = ['meu amor! ❤️','minha vida! 💖','minha felicidade!'];
+  let pi=0, ci=0, deleting=false;
+  function type() {
+    const cur = phrases[pi];
+    if (!deleting) { el.textContent = cur.substring(0,++ci); if(ci===cur.length){deleting=true;setTimeout(type,2200);return;} }
+    else { el.textContent = cur.substring(0,--ci); if(ci===0){deleting=false;pi=(pi+1)%phrases.length;} }
+    setTimeout(type, deleting?60:90);
+  }
+  setTimeout(type, 4500);
+})();
+
+/* ── COUNTER — início do namoro: 16/08/2023 ── */
+const startDate = new Date('2023-08-16T00:00:00');
+function pad(n) { return String(n).padStart(2,'0'); }
+function updateCounter() {
+  const now  = new Date();
+  const diff = now - startDate;                          // ms totais
+  const days    = Math.floor(diff / 86400000);
+  const hours   = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000)  / 60000);
+  const seconds = Math.floor((diff % 60000)    / 1000);
+  document.getElementById('cnt-days').textContent    = days.toLocaleString('pt-BR');
+  document.getElementById('cnt-hours').textContent   = pad(hours);
+  document.getElementById('cnt-minutes').textContent = pad(minutes);
+  document.getElementById('cnt-seconds').textContent = pad(seconds);
+}
+setInterval(updateCounter, 1000);
+updateCounter();
+
+/* ── PRÓXIMO ANIVERSÁRIO DA LELE (14/05) ── */
+(function(){
+  const now = new Date();
+  // mês é base-0: maio = 4
+  let next = new Date(now.getFullYear(), 4, 14);
+  if (next <= now) next = new Date(now.getFullYear()+1, 4, 14);
+  const daysLeft = Math.ceil((next - now) / 86400000);
+  document.getElementById('nextBirthday').textContent = daysLeft;
+  // mostra a data formatada
+  document.getElementById('nextBirthdayDate').textContent =
+    '14/05/' + next.getFullYear();
+})();
+
+/* ── SCROLL REVEAL ──────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .tl-item').forEach(el => io.observe(el));
+
+/* ── SECRET MESSAGE ─────────────────────── */
+function showMessage() {
+  document.getElementById('hiddenMessage').style.display = 'block';
+}
+
+/* ── MUSIC PLAYER ───────────────────────── */
+let isPlaying = false;
+const audio = document.getElementById('bgAudio');
+const musicProgress = document.getElementById('musicProgress');
+
+function toggleMusic() {
+  const src = audio.getAttribute('src');
+  if (!src || src.trim() === '') {
+    document.getElementById('musicTitle').textContent = '♡ Adicione o link do .mp3 no código!';
+    document.getElementById('musicNote').textContent  = '// troque src="" na tag <audio> pelo link direto do arquivo .mp3';
+    return;
+  }
+  if (isPlaying) {
+    audio.pause();
+    document.getElementById('musicBtn').textContent = '▶';
+    isPlaying = false;
+  } else {
+    audio.play().catch(() => {
+      document.getElementById('musicTitle').textContent = '♡ Erro: verifique se o link do .mp3 está correto';
+    });
+    document.getElementById('musicBtn').textContent = '⏸';
+    document.getElementById('musicNote').style.display = 'none';
+    isPlaying = true;
+  }
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) musicProgress.style.width = (audio.currentTime / audio.duration * 100) + '%';
+});
+
+/* ── KONAMI CODE ────────────────────────── */
+const KONAMI = [38,38,40,40,37,39,37,39];
+let kIdx = 0;
+document.addEventListener('keydown', e => {
+  kIdx = (e.keyCode === KONAMI[kIdx]) ? kIdx+1 : 0;
+  if (kIdx === KONAMI.length) { document.getElementById('easter-egg').classList.add('show'); kIdx=0; }
+});
+
+/* ── MINI GAME ──────────────────────────── */
+(function(){
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let state='idle', score, lives, player, collectibles, bugs, frame, animId;
+
+  function reset() {
+    score=0; lives=3; frame=0;
+    player={x:W/2,y:H-60,size:22,speed:3.5};
+    collectibles=[]; bugs=[];
+    document.getElementById('scoreDisplay').textContent=score;
+    document.getElementById('livesDisplay').textContent=lives;
+    document.getElementById('gameMsg').textContent='';
+  }
+
+  function spawnC() { collectibles.push({x:30+Math.random()*(W-60),y:-20,speed:1.2+Math.random()*1.5,r:12}); }
+  function spawnB() { bugs.push({x:30+Math.random()*(W-60),y:-20,speed:1.5+Math.random()*2,r:14,vx:(Math.random()-0.5)*2}); }
+
+  const keys={};
+  document.addEventListener('keydown',e=>{keys[e.key]=true; if(e.key==='Enter'&&state!=='playing') startGame();});
+  document.addEventListener('keyup',e=>keys[e.key]=false);
+  canvas.addEventListener('click',()=>{if(state!=='playing') startGame();});
+  let touchStart=null;
+  canvas.addEventListener('touchstart',e=>{touchStart=e.touches[0];});
+  canvas.addEventListener('touchmove',e=>{
+    if(!touchStart)return;
+    player.x=Math.max(player.size,Math.min(W-player.size,player.x+(e.touches[0].clientX-touchStart.clientX)*0.08));
+    player.y=Math.max(player.size,Math.min(H-player.size,player.y+(e.touches[0].clientY-touchStart.clientY)*0.08));
+    touchStart=e.touches[0];
+  });
+
+  function drawHeart(x,y,size,color){
+    ctx.save(); ctx.translate(x,y); ctx.fillStyle=color; ctx.beginPath();
+    ctx.moveTo(0,size*0.3);
+    ctx.bezierCurveTo(-size*1.1,-size*0.6,-size*2.2,size*0.3,0,size*1.4);
+    ctx.bezierCurveTo(size*2.2,size*0.3,size*1.1,-size*0.6,0,size*0.3);
+    ctx.fill(); ctx.restore();
+  }
+  function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(5,1,15,0.5)'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,92,168,0.04)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    frame++;
+    if(frame%70===0) spawnC();
+    if(frame%110===0) spawnB();
+    if(keys['ArrowLeft']||keys['a']||keys['A']) player.x-=player.speed;
+    if(keys['ArrowRight']||keys['d']||keys['D']) player.x+=player.speed;
+    if(keys['ArrowUp']||keys['w']||keys['W']) player.y-=player.speed;
+    if(keys['ArrowDown']||keys['s']||keys['S']) player.y+=player.speed;
+    player.x=Math.max(player.size,Math.min(W-player.size,player.x));
+    player.y=Math.max(player.size,Math.min(H-player.size,player.y));
+    drawHeart(player.x,player.y,player.size*0.5,'#ff5ca8');
+    for(let i=collectibles.length-1;i>=0;i--){
+      const c=collectibles[i]; c.y+=c.speed;
+      drawHeart(c.x,c.y,c.r*0.5,'#ff8fc6');
+      if(dist(player,c)<player.size+c.r*0.8){collectibles.splice(i,1);score+=10;document.getElementById('scoreDisplay').textContent=score;if(score>=100){endGame(true);return;}continue;}
+      if(c.y>H+20) collectibles.splice(i,1);
+    }
+    for(let i=bugs.length-1;i>=0;i--){
+      const b=bugs[i]; b.y+=b.speed; b.x+=b.vx;
+      ctx.font=`${b.r*1.8}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🐛',b.x,b.y);
+      if(dist(player,b)<player.size+b.r*0.7){bugs.splice(i,1);lives--;document.getElementById('livesDisplay').textContent=lives;if(lives<=0){endGame(false);return;}continue;}
+      if(b.y>H+20) bugs.splice(i,1);
+    }
+    ctx.fillStyle='rgba(255,92,168,0.7)'; ctx.font='13px JetBrains Mono,monospace'; ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(`♡ ${score}/100`,14,12);
+    animId=requestAnimationFrame(loop);
+  }
+
+  window.startGame=function(){if(animId)cancelAnimationFrame(animId);reset();state='playing';loop();};
+
+  function endGame(won){
+    state=won?'win':'over'; cancelAnimationFrame(animId);
+    ctx.fillStyle='rgba(5,1,15,0.8)'; ctx.fillRect(0,0,W,H); ctx.textAlign='center';
+    if(won){
+      ctx.fillStyle='#ff5ca8'; ctx.font='bold 32px Space Grotesk,sans-serif'; ctx.fillText('Você venceu! ❤️',W/2,H/2-20);
+      ctx.fillStyle='#ffd0e5'; ctx.font='16px Space Grotesk,sans-serif'; ctx.fillText('Assim como você venceu meu coração ✨',W/2,H/2+24);
+      document.getElementById('gameMsg').textContent='🎉 Parabéns! Pressione ENTER para jogar de novo';
+    } else {
+      ctx.fillStyle='#ff5ca8'; ctx.font='bold 28px Space Grotesk,sans-serif'; ctx.fillText('Game Over... mas te amo igual! 💖',W/2,H/2-10);
+      ctx.fillStyle='#aaa'; ctx.font='14px JetBrains Mono,monospace'; ctx.fillText(`Pontos: ${score}`,W/2,H/2+28);
+      document.getElementById('gameMsg').textContent='Pressione ENTER ou clique para tentar de novo';
+    }
+  }
+
+  ctx.fillStyle='rgba(5,1,15,0.5)'; ctx.fillRect(0,0,W,H);
+  ctx.textAlign='center'; ctx.fillStyle='#ff5ca8'; ctx.font='bold 22px Space Grotesk,sans-serif';
+  ctx.fillText('Colete 100 pontos em corações ♡',W/2,H/2-16);
+  ctx.fillStyle='#666'; ctx.font='13px JetBrains Mono,monospace';
+  ctx.fillText('Evite os bugs 🐛 — clique para começar',W/2,H/2+20);
+})();
+console.log(`
+╔══════════════════════════════╗
+║      FELIZ ANIVERSÁRIO ❤️    ║
+╠══════════════════════════════╣
+║ Você encontrou o console!    ║
+║ Isso significa que você      ║
+║ é oficialmente nerd demais.  ║
+║                              ║
+║ Eu te amo infinitão ♡        ║
+╚══════════════════════════════╝
+`);
+</script>
+</body>
+</html>
